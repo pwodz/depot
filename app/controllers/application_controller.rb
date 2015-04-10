@@ -7,4 +7,28 @@ class ApplicationController < ActionController::Base
   def set_date_loaded
   	@date_loaded = Time.now
   end
+
+  private
+
+    def current_cart
+      Cart.find(session[:cart_id])
+  	rescue
+  	  cart = Cart.create
+  	  session[:cart_id] = cart.id
+  	  cart
+    end
+
+    def count_entries
+      if session[:counter].nil?
+        session[:counter] = 0
+      end
+      session[:counter] += 1
+    end
+
+    def reset_counter
+      if not session[:counter].nil?
+        session[:counter] = 0
+      end
+    end
+
 end
